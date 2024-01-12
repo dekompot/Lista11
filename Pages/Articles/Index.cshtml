@@ -1,0 +1,33 @@
+﻿@page
+@model Lista12.Pages.Articles.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<div class="container">
+    <div class="row">
+        @foreach (var item in Model.Article)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img class="card-img-top" src="~/@Url.Content(item.ImageName is null ? "Images/no_image.jpg" : "Uploads/" + item.ImageName)" alt="Image">
+                    <div class="card-body">
+                        <h5 class="card-title">@Html.DisplayFor(modelItem => item.Name)</h5>
+                        <p class="card-text">Price: @Html.DisplayFor(modelItem => item.Price)</p>
+                        <p class="card-text">Expiration Date: @Html.DisplayFor(modelItem => item.ExpirationDate)</p>
+                        <p class="card-text">Category: @Html.DisplayFor(modelItem => item.Category.Name)</p>
+                        <a href="@Url.Page("Details", new { id = item.ArticleId })" class="btn btn-info">Details</a>
+                        <a href="@Url.Page("Edit", new { id = item.ArticleId })" class="btn btn-warning">Edit</a>
+                        <a href="@Url.Page("Delete", new { id = item.ArticleId })" class="btn btn-danger">Delete</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
