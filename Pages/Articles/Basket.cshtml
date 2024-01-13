@@ -1,0 +1,76 @@
+﻿@page "{handler?}"
+@model Lista12.Pages.Articles.BasketModel
+
+@{
+    ViewData["Title"] = "Basket";
+}
+
+<h1>Basket</h1>
+
+@if(Model.Basket != null && Model.Basket.Count() != 0)
+{
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Basket[0].Item1.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Basket[0].Item1.ImageName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Basket[0].Item1.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Basket[0].Item1.Category.Name)
+            </th>
+            <th>
+                Pieces
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Basket) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Item1.Name)
+            </td>
+            <td>
+                    <img class="index_image" src="~/@Url.Content(item.Item1.ImageName is null ? "Images/no_image.jpg" : "Uploads/" + item.Item1.ImageName)" alt="Image">
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.Item1.Price)
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.Item1.Category.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Item2)
+            </td>
+            <td>
+                   <form method="post" asp-page-handler="AddToBasket" asp-route-id="@item.Item1.ArticleId">
+                   <button type="submit" class="btn btn-success">+</button>
+                   </form>
+            </td>
+            <td>
+                        <form method="post" asp-page-handler="RemoveFromBasket" asp-route-id="@item.Item1.ArticleId">
+                            <button type="submit" class="btn btn-dark">-</button>
+                        </form>
+            </td>
+            <td>
+                        <form method="post" asp-page-handler="RemoveAllPiecesFromBasket" asp-route-id="@item.Item1.ArticleId">
+                            <button type="submit" class="btn btn-danger">Remove</button>
+                        </form>
+            </td>
+        </tr>
+}
+    </tbody>
+    <caption>
+        Total: @ViewBag.Total $
+    </caption>
+</table>
+}
+else
+{
+    <img src="~/@Url.Content("Images/empty_basket.png")" alt="Empty basket">
+}
